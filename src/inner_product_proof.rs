@@ -184,11 +184,17 @@ impl InnerProductProof {
             H = H_L;
         }
 
+        let a = a[0];
+        let b = b[0];
+
+        transcript.append_scalar(b"ipp_a", &a);
+        transcript.append_scalar(b"ipp_b", &b);
+
         InnerProductProof {
             L_vec: L_vec,
             R_vec: R_vec,
-            a: a[0],
-            b: b[0],
+            a,
+            b,
         }
     }
 
@@ -431,7 +437,7 @@ mod tests {
     use sha3::Sha3_512;
 
     fn test_helper_create(n: usize) {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         use crate::generators::BulletproofGens;
         let bp_gens = BulletproofGens::new(n, 1);
